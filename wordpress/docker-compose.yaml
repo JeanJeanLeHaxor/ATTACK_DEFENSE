@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  wordpress:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_pass
+      WORDPRESS_DB_NAME: wp_db
+    privileged: true              # 💀 Grants full capabilities
+    cap_add:
+      - ALL                      # 💀 All Linux capabilities
+    pid: "host"   
+    depends_on:
+      - db
+    volumes:
+      - wordpress_data:/var/www/html
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  wordpress_data:
+  db_data:
+

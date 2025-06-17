@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100  justify-center items-center h-screen">
+  <nav class="bg-gray-800 text-white px-6 py-3 flex justify-between items-center">
+    <div class="space-x-4">
+    {% if session.get('user') %}
+    <a href="/public_notes" class="hover:underline">Public Notes</a>
+      <a href="/messages" class="hover:underline">Messages</a>
+      {% if session.get('user') == 'admin' %}
+        <a href="/admin/public_notes" class="hover:underline">Admin Public Notes</a>
+        <a href="/admin/notes" class="hover:underline">Lookup</a>
+        <a href="/admin/requests" class="hover:underline">Contact Requests</a>
+      {% endif %}
+    {% else %}
+      <a href="/login" class="hover:underline">Login</a>
+    {% endif %}
+    <a href="/contact" class="hover:underline">Contact</a>
+
+  </div>
+  {% if session.get('user') %}
+    <div>
+      <span class="mr-4">Hello, {{ session.get('user') }}</span>
+      <a href="/logout" class="bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</a>
+    </div>
+  {% endif %}
+</nav>
+
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Login</h2>
+    <form method="POST" class="space-y-4">
+      <input name="username" placeholder="Username" class="w-full p-2 border border-gray-300 rounded" />
+      <input name="password" type="password" placeholder="Password" class="w-full p-2 border border-gray-300 rounded" />
+      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Login</button>
+    </form>
+  </div>
+
+  </div>
+</body>
+</html>
+

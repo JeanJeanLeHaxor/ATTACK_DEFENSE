@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin - Contact Requests</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <nav class="bg-gray-800 text-white px-6 py-3 flex justify-between items-center">
+    <div class="space-x-4">
+    {% if session.get('user') %}
+    <a href="/public_notes" class="hover:underline">Public Notes</a>
+      <a href="/messages" class="hover:underline">Messages</a>
+      {% if session.get('user') == 'admin' %}
+        <a href="/admin/public_notes" class="hover:underline">Admin Public Notes</a>
+        <a href="/admin/notes" class="hover:underline">Lookup</a>
+        <a href="/admin/requests" class="hover:underline">Contact Requests</a>
+      {% endif %}
+    {% else %}
+      <a href="/login" class="hover:underline">Login</a>
+    {% endif %}
+    <a href="/contact" class="hover:underline">Contact</a>
+
+  </div>
+  {% if session.get('user') %}
+    <div>
+      <span class="mr-4">Hello, {{ session.get('user') }}</span>
+      <a href="/logout" class="bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</a>
+    </div>
+  {% endif %}
+</nav>
+
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow space-y-6">
+    <h1 class="text-xl font-bold text-red-600">Contact Requests</h1>
+    {% for req in requests %}
+      <div class="border p-3 rounded bg-gray-50">
+        <strong>{{ req.name }}</strong> says:<br>
+        {{ req.message|safe }}
+      </div>
+    {% else %}
+      <p>No contact requests yet.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
+

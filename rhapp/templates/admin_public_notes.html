@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Public Notes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <nav class="bg-gray-800 text-white px-6 py-3 flex justify-between items-center">
+    <div class="space-x-4">
+    {% if session.get('user') %}
+    <a href="/public_notes" class="hover:underline">Public Notes</a>
+      <a href="/messages" class="hover:underline">Messages</a>
+      {% if session.get('user') == 'admin' %}
+        <a href="/admin/public_notes" class="hover:underline">Admin Public Notes</a>
+        <a href="/admin/notes" class="hover:underline">Lookup</a>
+        <a href="/admin/requests" class="hover:underline">Contact Requests</a>
+      {% endif %}
+    {% else %}
+      <a href="/login" class="hover:underline">Login</a>
+    {% endif %}
+    <a href="/contact" class="hover:underline">Contact</a>
+
+  </div>
+  {% if session.get('user') %}
+    <div>
+      <span class="mr-4">Hello, {{ session.get('user') }}</span>
+      <a href="/logout" class="bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</a>
+    </div>
+  {% endif %}
+</nav>
+
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded shadow space-y-6">
+    <h1 class="text-xl font-bold text-red-600">Admin - Manage Public Notes (SSTI Vuln)</h1>
+    <form method="POST" class="space-y-4">
+      <textarea name="content" rows="5" class="w-full p-2 border rounded" placeholder="Add note with SSTI vulnerability"></textarea>
+      <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded">Add Note (SSTI)</button>
+    </form>
+    <hr>
+    <h2 class="text-lg font-semibold">Existing Notes</h2>
+    {% for note in notes %}
+      <div class="border p-3 rounded bg-gray-100">{{ note.content }}</div>
+    {% else %}
+      <p>No notes yet.</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
+

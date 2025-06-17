@@ -1,0 +1,4 @@
+Flask
+ldap3
+Flask-SQLAlchemy
+playwright
