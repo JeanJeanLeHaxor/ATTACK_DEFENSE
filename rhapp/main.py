@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
 import os
 from playwright.sync_api import sync_playwright
+from ldap3 import Server, Connection, SUBTREE
 
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'adminpass'
@@ -263,10 +264,16 @@ def render_admin():
 @login_required
 @admin_only
 def ldap_lookup():
+    server = Server('ldap://localhost')  # Replace with your test LDAP server
+    conn = Connection(server, auto_bind=True)
+    search_base = 'dc=example,dc=com'
     user = request.form['user']
     query = f"(uid={user})"
     # For demo, returning string. Replace with real LDAP query if needed.
-    return f"LDAP Query: {query}"
+    conn.search(search_base, query, search_scope=SUBTREE, attributes=['cn', 'mail'])
+
+    for entry in conn.entries:
+        print(entry)
 
 # Initialize database & fake users
 
