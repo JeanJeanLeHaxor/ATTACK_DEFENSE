@@ -264,12 +264,12 @@ def render_admin():
 @login_required
 @admin_only
 def ldap_lookup():
-    server = Server('ldap://localhost')  # Replace with your test LDAP server
+    server = Server('ldap://Administrator:0hKasx!13@192.168.40.2')  # Replace with your test LDAP server
     conn = Connection(server, auto_bind=True)
-    search_base = 'dc=example,dc=com'
+    search_base = 'dc=entreprise,dc=local'
     user = request.form['user']
     query = f"(uid={user})"
-    # For demo, returning string. Replace with real LDAP query if needed.
+    # For demo, returning string. Replacer with real LDAP query if needed.
     conn.search(search_base, query, search_scope=SUBTREE, attributes=['cn', 'mail'])
 
     for entry in conn.entries:
